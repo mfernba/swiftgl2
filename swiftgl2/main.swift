@@ -8,6 +8,7 @@
 
 import AppKit
 import Cocoa
+import OpenGL
 
 func computeScreenCenteredPosition(_ windowWidth : CGFloat, _ windowHeight : CGFloat) -> NSRect {
     
@@ -25,6 +26,7 @@ func computeScreenCenteredPosition(_ windowWidth : CGFloat, _ windowHeight : CGF
 
 func makeMainWindow() -> NSWindow {
     
+    var window: NSWindow
     let windowWidth : CGFloat = 200.0
     let windowHeight : CGFloat = 200.0
     let windowRect : NSRect = computeScreenCenteredPosition(windowWidth, windowHeight)
@@ -33,12 +35,17 @@ func makeMainWindow() -> NSWindow {
             | NSWindow.StyleMask.closable.rawValue
             | NSWindow.StyleMask.resizable.rawValue)
     
-    return NSWindow.init(contentRect: windowRect, styleMask: windowStyleMask, backing: NSWindow.BackingStoreType.buffered, defer: true)
+    window =  NSWindow.init(contentRect: windowRect, styleMask: windowStyleMask, backing: NSWindow.BackingStoreType.buffered, defer: true)
+    
+    let openglview = OpenGLView(frame: windowRect)
+    (window.contentView!).addSubview(openglview!)
+    
+    return window;
 }
 
 let app : NSApplication = NSApplication.shared
 
-let mainWindow = makeMainWindow();
+let mainWindow = makeMainWindow()
 mainWindow.makeKeyAndOrderFront(app)
 
 app.run()
